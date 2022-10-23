@@ -1,0 +1,2 @@
+pandas
+stag==0.2.2

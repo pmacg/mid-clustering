@@ -1,0 +1,6 @@
+data/*.csv
+data/*.dta
+data/*.pdf
+data/*.zip
+
+**/__pycache__/
