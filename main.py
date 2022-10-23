@@ -1,17 +1,8 @@
-import graph_builder
-import stag.graph
-import stag.graphio
-
-
-def load_graph(start_year, end_year):
-    return stag.graphio.load_edgelist(
-        graph_builder.edgelist_filename(start_year, end_year))
+import cluster
 
 
 def main():
-    graph_builder.generate_graph(1800, 1900)
-    g: stag.graph.Graph = load_graph(1800, 1900)
-    pass
+    cluster.find_mid_clusters(1900, 1950, "United States of America")
 
 
 if __name__ == "__main__":

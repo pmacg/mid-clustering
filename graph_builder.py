@@ -64,6 +64,11 @@ def generate_graph(start_year, end_year):
     if os.path.exists(edgelist_filename(start_year, end_year)):
         return
 
+    # If the data is not in the expected place in the data folder, then
+    # raise an exception
+    if not (os.path.exists(COUNTRY_CODES_FILENAME) and os.path.exists(DYADIC_MID_FILENAME)):
+        raise Exception("Cannot generate graph - MID data not found.")
+
     # Get the mappings from code to state name
     df_states = pd.read_csv(COUNTRY_CODES_FILENAME)
     ccode_to_vertex = {}
