@@ -4,3 +4,5 @@ data/*.pdf
 data/*.zip
 
 **/__pycache__/
+
+*.zip
