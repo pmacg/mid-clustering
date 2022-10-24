@@ -33,12 +33,40 @@ def load_vertex_dictionaries(start_year, end_year):
     return country_to_vertex, vertex_to_country
 
 
+def simplify(num_g_vertices: int, sparse_vector):
+    """
+    Given a sparse vector (presumably from an approximate pagerank calculation on the double cover),
+    and the number of vertices in the original graph, compute the 'simplified' approximate pagerank vector.
+
+    See [MS21] for the definition of the simplified vector.
+
+    [MS21] Macgregor, Peter, and He Sun.
+    "Local algorithms for finding densely connected clusters."
+    International Conference on Machine Learning. PMLR, 2021.
+
+    :param num_g_vertices:
+    :param sparse_vector:
+    :return:
+    """
+    # Initialise the new sparse vector
+    new_vector = scipy.sparse.lil_matrix((2 * num_g_vertices, 1))
+
+    # Iterate through the entries in the matrix
+    for i in range(min(num_g_vertices, sparse_vector.shape[0] - num_g_vertices)):
+        if sparse_vector[i, 0] > sparse_vector[i + num_g_vertices, 0]:
+            new_vector[i, 0] = sparse_vector[i, 0] - sparse_vector[i + num_g_vertices, 0]
+        elif sparse_vector[i + num_g_vertices, 0] > sparse_vector[i, 0]:
+            new_vector[i + num_g_vertices, 0] = sparse_vector[i + num_g_vertices, 0] - sparse_vector[i, 0]
+
+    return new_vector.tocsc()
+
+
 def find_mid_clusters(start_year: int, end_year: int, seed_country: str):
     """
-    Use the local clustering algorithm from [MS2021] to find clusters of allies
+    Use the local clustering algorithm from [MS21] to find clusters of allies
     in the MID dataset.
 
-    [MS2021] Macgregor, Peter, and He Sun.
+    [MS21] Macgregor, Peter, and He Sun.
     "Local algorithms for finding densely connected clusters."
     International Conference on Machine Learning. PMLR, 2021.
 
@@ -65,10 +93,15 @@ def find_mid_clusters(start_year: int, end_year: int, seed_country: str):
         raise Exception("Seed country not found in dataset.")
     starting_vertex = country_to_vertex[seed_country]
 
-    # Run the local clustering algorithm. Pass as the target volume ~half the volume
-    # of the original graph
-    dc_cluster = stag.cluster.local_cluster(h, starting_vertex, int(g.total_volume() / 2))
+    # Run the approximate pagerank on the double cover graph
+    alpha = 0.01
+    epsilon = 1. / g.total_volume()
+    seed_vector = scipy.sparse.csc_matrix((h.number_of_vertices(), 1))
+    seed_vector[starting_vertex, 0] = 1
+    p, r = stag.cluster.approximate_pagerank(h, seed_vector, alpha, epsilon)
 
-    # Should instead get the pagerank vector directly, run simplify, and then sweep set - two of which
-    # can use the STAG library.
+    # Compute the simplified pagerank vector
+    p_simplified = simplify(g.number_of_vertices(), p)
+
+    # Compute the sweep set in the double cover
     pass
