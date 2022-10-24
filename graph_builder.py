@@ -5,16 +5,16 @@ import pandas as pd
 import os
 
 # The data files should be stored in these given locations.
-COUNTRY_CODES_FILENAME = "data/COW-country-codes.csv"
-DYADIC_MID_FILENAME = "data/dyadic_mid_4.01.csv"
+COUNTRY_CODES_FILENAME = "/home/pmacg/wc/mid-clustering/data/COW-country-codes.csv"
+DYADIC_MID_FILENAME = "/home/pmacg/wc/mid-clustering/data/dyadic_mid_4.01.csv"
 
 
 def edgelist_filename(start_year, end_year):
-    return f"graphs/dyadic_mid_{start_year}_{end_year}.edgelist"
+    return f"/home/pmacg/wc/mid-clustering/graphs/dyadic_mid_{start_year}_{end_year}.edgelist"
 
 
 def vertex_filename(start_year, end_year):
-    return f"graphs/dyadic_mid_{start_year}_{end_year}.vertices"
+    return f"/home/pmacg/wc/mid-clustering/graphs/dyadic_mid_{start_year}_{end_year}.vertices"
 
 
 def build_edge_weights(mid_dataframe):
