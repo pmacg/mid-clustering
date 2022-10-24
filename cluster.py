@@ -95,7 +95,7 @@ def find_mid_clusters(start_year: int, end_year: int, seed_country: str):
 
     # Run the approximate pagerank on the double cover graph
     alpha = 0.01
-    epsilon = 1. / g.total_volume()
+    epsilon = 1. / (5 * g.total_volume())
     seed_vector = scipy.sparse.csc_matrix((h.number_of_vertices(), 1))
     seed_vector[starting_vertex, 0] = 1
     p, r = stag.cluster.approximate_pagerank(h, seed_vector, alpha, epsilon)
@@ -104,4 +104,9 @@ def find_mid_clusters(start_year: int, end_year: int, seed_country: str):
     p_simplified = simplify(g.number_of_vertices(), p)
 
     # Compute the sweep set in the double cover
-    pass
+    sweep_set = stag.cluster.sweep_set_conductance(h, p_simplified)
+
+    # Split the returned vertices into those in the same cluster as the seed, and others.
+    this_cluster = [vertex_to_country[i] for i in sweep_set if i < g.number_of_vertices()]
+    that_cluster = [vertex_to_country[i - g.number_of_vertices()] for i in sweep_set if i >= g.number_of_vertices()]
+    return this_cluster, that_cluster

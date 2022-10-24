@@ -2,7 +2,9 @@ import cluster
 
 
 def main():
-    cluster.find_mid_clusters(1900, 1950, "United States of America")
+    this_cluster, that_cluster = cluster.find_mid_clusters(1900, 2000, "Brazil")
+    print(this_cluster)
+    print(that_cluster)
 
 
 if __name__ == "__main__":
