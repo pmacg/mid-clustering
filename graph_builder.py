@@ -7,14 +7,22 @@ import os
 # The data files should be stored in these given locations.
 COUNTRY_CODES_FILENAME = "/home/pmacg/wc/mid-clustering/data/COW-country-codes.csv"
 DYADIC_MID_FILENAME = "/home/pmacg/wc/mid-clustering/data/dyadic_mid_4.01.csv"
+GRAPHS_DIRECTORY = "/home/pmacg/wc/mid-clustering/graphs"
+
+
+def override_data_location(country_codes_filename, mid_filename, graphs_directory):
+    global COUNTRY_CODES_FILENAME, DYADIC_MID_FILENAME, GRAPHS_DIRECTORY
+    COUNTRY_CODES_FILENAME = country_codes_filename
+    DYADIC_MID_FILENAME = mid_filename
+    GRAPHS_DIRECTORY = graphs_directory
 
 
 def edgelist_filename(start_year, end_year):
-    return f"/home/pmacg/wc/mid-clustering/graphs/dyadic_mid_{start_year}_{end_year}.edgelist"
+    return f"{GRAPHS_DIRECTORY}/dyadic_mid_{start_year}_{end_year}.edgelist"
 
 
 def vertex_filename(start_year, end_year):
-    return f"/home/pmacg/wc/mid-clustering/graphs/dyadic_mid_{start_year}_{end_year}.vertices"
+    return f"{GRAPHS_DIRECTORY}/dyadic_mid_{start_year}_{end_year}.vertices"
 
 
 def build_edge_weights(mid_dataframe):
