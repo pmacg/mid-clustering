@@ -96,7 +96,7 @@ def find_mid_clusters(start_year: int, end_year: int, seed_country: str, size_fa
 
     # Run the approximate pagerank on the double cover graph
     alpha = 0.01
-    epsilon = size_factor * 1. / (5 * g.total_volume()) + (1 - size_factor) * 1. / (5 * g.degree(starting_vertex))
+    epsilon = size_factor * 1. / (5 * g.total_volume()) + (1 - size_factor) * 1. / (20 * g.degree(starting_vertex))
     seed_vector = scipy.sparse.lil_matrix((h.number_of_vertices(), 1))
     seed_vector[starting_vertex, 0] = 1
     p, r = stag.cluster.approximate_pagerank(h, seed_vector.tocsc(), alpha, epsilon)
