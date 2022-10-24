@@ -10,7 +10,7 @@ def main():
     graphs_directory = "./graphs"
     graph_builder.override_data_location(country_codes_filename, dyadic_mid_filename, graphs_directory)
     
-    this_cluster, that_cluster = cluster.find_mid_clusters(1900, 1950, "Indonesia")
+    this_cluster, that_cluster = cluster.find_mid_clusters(1850, 2010, "Madagascar")
     print(this_cluster)
     print(that_cluster)
     

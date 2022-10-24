@@ -91,16 +91,17 @@ def generate_graph(start_year, end_year):
     # Print the edgelist to the output file
     with open(edgelist_filename(start_year, end_year), 'w') as f_out:
         for edge_tuple in edge_weights_dict:
-            # Add these country labels to the dictionary and array storing them
-            for country_code in edge_tuple:
-                if country_code not in ccode_to_vertex:
-                    country_name = df_states.query(f"CCode == {country_code}").iloc[0, 2]
-                    next_index = len(vertex_labels)
-                    ccode_to_vertex[country_code] = next_index
-                    vertex_labels.append(country_name)
-
             # Add edge only if weight is 3 or greater
             if edge_weights_dict[edge_tuple] >= 3:
+                # Add these country labels to the dictionary and array storing them
+                for country_code in edge_tuple:
+                    if country_code not in ccode_to_vertex:
+                        country_name = df_states.query(f"CCode == {country_code}").iloc[0, 2]
+                        next_index = len(vertex_labels)
+                        ccode_to_vertex[country_code] = next_index
+                        vertex_labels.append(country_name)
+
+                # Write to the edgelist file
                 weight = edge_weights_dict[edge_tuple]
                 f_out.write(f"{ccode_to_vertex[edge_tuple[0]]} {ccode_to_vertex[edge_tuple[1]]} {weight}\n")
 
