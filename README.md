@@ -1,6 +1,8 @@
 # MID Dataset Clustering
 This repository contains code for finding clusters in the MID conflict dataset. The clustering algorithm is based on the paper "Local Algorithms for Finding Densely Connected Clusters", which appeared in ICML'21.
 
+See [the demo page](https://staglibrary.io/clustering-demo.html) to interactively see the output of the algorithm.
+
 ## Downloading the Dataset
 
 * Download the Dyadic MID v4.01 dataset from [here](https://correlatesofwar.org/data-sets/mids/).
