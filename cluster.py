@@ -61,7 +61,7 @@ def simplify(num_g_vertices: int, sparse_vector):
     return new_vector.tocsc()
 
 
-def find_mid_clusters(start_year: int, end_year: int, seed_country: str):
+def find_mid_clusters(start_year: int, end_year: int, seed_country: str, size_factor: float):
     """
     Use the local clustering algorithm from [MS21] to find clusters of allies
     in the MID dataset.
@@ -73,6 +73,7 @@ def find_mid_clusters(start_year: int, end_year: int, seed_country: str):
     :param start_year:
     :param end_year:
     :param seed_country: A string giving the country around which to find the clusters
+    :param size_factor: A number from 0 to 1 indicating how 'local' the cluster should be
     :return:
     """
     # Start by constructing a graph representing the interstate disputes during
@@ -95,7 +96,7 @@ def find_mid_clusters(start_year: int, end_year: int, seed_country: str):
 
     # Run the approximate pagerank on the double cover graph
     alpha = 0.01
-    epsilon = 1. / (5 * g.total_volume())
+    epsilon = size_factor * 1. / (5 * g.total_volume()) + (1 - size_factor) * 1. / (20 * g.degree(starting_vertex))
     seed_vector = scipy.sparse.lil_matrix((h.number_of_vertices(), 1))
     seed_vector[starting_vertex, 0] = 1
     p, r = stag.cluster.approximate_pagerank(h, seed_vector.tocsc(), alpha, epsilon)
